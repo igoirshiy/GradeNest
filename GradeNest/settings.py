@@ -1,22 +1,18 @@
-"""
-Django settings for GradeNest project.
-"""
-
 import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(0&@=_43$i(a@0x(pa#$=@o)7q8yd5r^by@-75se995xsrs6j%'
-
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY
+SECRET_KEY = 'your-secret-key'
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
-# Application definition
+# Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -56,54 +52,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'GradeNest.wsgi.application'
 
-# Database (Django’s own DB, still needed for sessions, admin, etc.)
+# DATABASE (Supabase Session Pooler)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< HEAD
-        'HOST': 'db.pdtcnqitjifyqcoijmqi.supabase.co',   # copy from Supabase
-        'PORT': '5432',
-        'NAME': 'postgres',                  # database name
-        'USER': 'postgres',                  # username
-        'PASSWORD': 'snc&4e@D$%26CVM',          # password
-=======
-        'HOST': os.environ.get('DB_HOST', 'db.pdtcnqitjifyqcoijmqi.supabase.co'),
-        'PORT': '5432',
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'snc&4e@D$%26CVM'),
->>>>>>> register-update
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
-
-<<<<<<< HEAD
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-=======
-# Tell Django to use your custom user model
-AUTH_USER_MODEL = 'accounts.CustomUser'
->>>>>>> register-update
-
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # Internationalization
@@ -116,12 +82,3 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-<<<<<<< HEAD
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-=======
-# ✅ SUPABASE CONFIG (add this at the bottom)
-SUPABASE_URL = "https://pdtcnqitjifyqcoijmqi.supabase.co"
-SUPABASE_KEY = "your-anon-public-key-here"
->>>>>>> register-update
