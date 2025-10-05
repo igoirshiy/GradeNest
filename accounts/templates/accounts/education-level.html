@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Education Level - GradeNest</title>
+  <link rel="stylesheet" href="{% static 'accounts/css/education-level.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <script src="{% static 'accounts/js/education-level.js' %}" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="left-section">
+      <div class="logo">
+        <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img" />
+        <span>GradeNest</span>
+      </div>
+      <img src="{% static 'accounts/img/education-level-img.png' %}" alt="Student Illustration" class="illustration-img" />
+      <h1 class="tagline">Kick off by choosing your strand and year level.</h1>
+      <p class="description">GradeNest transforms your grades into clear insights that guide your success.</p>
+    </div>
+
+    <div class="right-section">
+      <div class="form-container">
+        <h2 class="form-title">Grade and Year Level Selection</h2>
+
+        <form id="educationForm" method="POST" action="{% url 'accounts:education_level' %}">
+          {% csrf_token %}
+          <div class="input-group">
+            <label for="gradeLevel">Grade Level</label>
+            <select id="gradeLevel" name="gradeLevel" class="form-select">
+              <option value="">Choose your grade</option>
+              <option value="Grade 7">Grade 7</option>
+              <option value="Grade 8">Grade 8</option>
+              <option value="Grade 9">Grade 9</option>
+              <option value="Grade 10">Grade 10</option>
+              <option value="Grade 11">Grade 11</option>
+              <option value="Grade 12">Grade 12</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="strand">Strand (if SHS)</label>
+            <select id="strand" name="strand" class="form-select">
+              <option value="">Select strand</option>
+              <option value="STEM">STEM</option>
+              <option value="GAS">GAS</option>
+              <option value="ABM">ABM</option>
+              <option value="HUMSS">HUMSS</option>
+            </select>
+          </div>
+
+          <button type="submit" class="get-started-btn">Get Started</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

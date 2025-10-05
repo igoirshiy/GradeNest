@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - GradeNest</title>
+  <link rel="stylesheet" href="{% static 'accounts/css/login.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <style>
+    .error-message {
+      color: #ff4d4d;
+      font-size: 13px;
+      margin-top: 4px;
+      display: none;
+    }
+    .messages {
+      margin-bottom: 10px;
+    }
+    .message {
+      color: #ff3333;
+      font-weight: 500;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">
+    <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img" />
+    <span>GradeNest</span>
+  </div>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container">
+  <form id="registerForm" class="form" method="POST" action="{% url 'accounts:register' %}">
+    {% csrf_token %}
+    <h2>Create Account</h2>
+
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <p class="message {{ message.tags }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Username -->
+    <label for="username">Full Name <span class="required">*</span></label>
+    <div class="input-wrapper">
+      <img src="{% static 'accounts/img/user-icon.png' %}" alt="User Icon" class="input-icon" />
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter your full name"
+        value="{{ username|default:'' }}"
+        required
+      />
+    </div>
+
+    <!-- Email -->
+    <label for="email">Email <span class="required">*</span></label>
+    <div class="input-wrapper">
+      <img src="{% static 'accounts/img/email-icon.png' %}" alt="Email Icon" class="input-icon" />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        value="{{ email|default:'' }}"
+        required
+      />
+    </div>
+
+    <!-- Password -->
+    <label for="password1">Password <span class="required">*</span></label>
+    <div class="input-wrapper">
+      <img src="{% static 'accounts/img/lock-icon.png' %}" alt="Lock Icon" class="input-icon" />
+      <input
+        type="password"
+        id="password1"
+        name="password1"
+        placeholder="Enter your password"
+        required
+      />
+    </div>
+
+    <!-- Confirm Password -->
+    <label for="password2">Confirm Password <span class="required">*</span></label>
+    <div class="input-wrapper">
+      <img src="{% static 'accounts/img/lock2-icon.png' %}" alt="Lock Icon" class="input-icon" />
+      <input
+        type="password"
+        id="password2"
+        name="password2"
+        placeholder="Re-enter password"
+        required
+      />
+    </div>
+    <p id="passwordError" class="error-message">Please make sure your passwords match.</p>
+
+    <!-- Terms -->
+    <div class="terms">
+      <label for="terms">
+        <input type="checkbox" id="terms" required />
+        I agree to the <a href="#">terms and conditions</a>
+      </label>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit">Register</button>
+
+    <!-- Login Link -->
+    <a href="{% url 'accounts:login' %}">Already have an account? Log in</a>
+  </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("registerForm");
+  const pass1 = document.getElementById("password1");
+  const pass2 = document.getElementById("password2");
+  const errorMsg = document.getElementById("passwordError");
+
+  form.addEventListener("submit", function(e) {
+    if (pass1.value !== pass2.value) {
+      e.preventDefault();
+      errorMsg.style.display = "block";
+      pass2.focus();
+    } else {
+      errorMsg.style.display = "none";
+    }
+  });
+
+  pass2.addEventListener("input", function() {
+    if (pass1.value === pass2.value) {
+      errorMsg.style.display = "none";
+    }
+  });
+});
+</script>
+
+</body>
+</html>
