@@ -60,34 +60,21 @@ WSGI_APPLICATION = 'GradeNest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< HEAD
-        'HOST': 'db.pdtcnqitjifyqcoijmqi.supabase.co',   # copy from Supabase
-        'PORT': '5432',
-        'NAME': 'postgres',                  # database name
-        'USER': 'postgres',                  # username
-        'PASSWORD': 'snc&4e@D$%26CVM',          # password
-=======
+
         'HOST': os.environ.get('DB_HOST', 'db.pdtcnqitjifyqcoijmqi.supabase.co'),
         'PORT': '5432',
         'NAME': os.environ.get('DB_NAME', 'postgres'),
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'snc&4e@D$%26CVM'),
->>>>>>> register-update
+
     }
 }
 
 
-<<<<<<< HEAD
-# Custom User Model
-AUTH_USER_MODEL = 'accounts.CustomUser'
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-=======
 # Tell Django to use your custom user model
 AUTH_USER_MODEL = 'accounts.CustomUser'
->>>>>>> register-update
+
 
 
 # Password validation
@@ -118,10 +105,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-<<<<<<< HEAD
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-=======
+
 # ✅ SUPABASE CONFIG (add this at the bottom)
 SUPABASE_URL = "https://pdtcnqitjifyqcoijmqi.supabase.co"
 SUPABASE_KEY = "your-anon-public-key-here"
->>>>>>> register-update
+

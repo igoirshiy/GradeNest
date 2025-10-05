@@ -40,10 +40,6 @@ def register_view(request):
 
 
 def education_level_view(request):
-<<<<<<< HEAD
 
     return render(request, 'accounts/education_level.html')
 
-=======
-    return render(request, 'accounts/education_level.html')
->>>>>>> register-update

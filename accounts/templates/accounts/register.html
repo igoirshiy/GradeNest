@@ -31,53 +31,7 @@
 
 <div class="container">
   <form id="registerForm" class="form" method="POST" action="{% url 'accounts:register' %}">
-<<<<<<< HEAD
-    {% csrf_token %}
-    <h2>Create Account</h2>
 
-    <!-- name -->
-    <label for="name">Full Name <span class="required">*</span></label>
-    <div class="input-wrapper">
-      <img src="{% static 'accounts/img/user-icon.png' %}" alt="User Icon" class="input-icon">
-      <input type="text" id="name" placeholder="" name="name">
-    </div>
-    <small class="error" id="nameError"></small>
-
-    <!-- email -->
-    <label for="email">Email <span class="required">*</span></label>
-    <div class="input-wrapper">
-      <img src="{% static 'accounts/img/email-icon.png' %}" alt="Email Icon" class="input-icon">
-      <input type="text" id="email" placeholder="" name="email">
-    </div>
-    <small class="error" id="emailError"></small>
-
-    <!-- password -->
-    <label for="password">Password <span class="required">*</span></label>
-    <div class="input-wrapper">
-      <img src="{% static 'accounts/img/lock-icon.png' %}" alt="Lock Icon" class="input-icon">
-      <input type="password" id="password" placeholder="" name="password">
-      <button type="button" id="togglePassword" class="toggle-btn">👁</button>
-    </div>
-    <small class="error" id="passwordError"></small>
-
-    <!-- confirm Password -->
-    <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-    <div class="input-wrapper">
-      <img src="{% static 'accounts/img/lock2-icon.png' %}" alt="Lock Icon" class="input-icon">
-      <input type="password" id="confirmPassword" placeholder="" name="confirmPassword">
-    </div>
-    <small class="error" id="confirmPasswordError"></small>
-
-    <!-- terms n conditions -->
-    <div class="terms">
-      <label for="terms">
-        <input type="checkbox" id="terms" name="terms">
-        I agree to the <a href="#">terms and conditions</a>
-      </label>
-    </div>
-
-    <small class="error" id="termsError"></small>
-=======
   {% csrf_token %}
   <h2>Create Account</h2>
 
@@ -116,7 +70,7 @@
     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password">
   </div>
   <small class="error" id="confirmPasswordError"></small>
->>>>>>> register-update
+
 
   <!-- Terms and Conditions -->
   <div class="terms">
