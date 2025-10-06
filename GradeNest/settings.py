@@ -4,9 +4,21 @@ Django settings for GradeNest project.
 
 from pathlib import Path
 import os
+import dj_database_url               # ✅ add this
+from dotenv import load_dotenv       # ✅ add this
 
+
+# --------------------------
+# BASE DIRECTORY & ENVIRONMENT
+# --------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ✅ Load environment variables from .env
+load_dotenv()
+
+# --------------------------
+# SECURITY
+# --------------------------
 SECRET_KEY = 'django-insecure-(0&@=_43$i(a@0x(pa#$=@o)7q8yd5r^by@-75se995xsrs6j%'
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -75,13 +87,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'GradeNest.wsgi.application'
 
 # --------------------------
-# DATABASE
+# DATABASE (Supabase via Session Pooler)
 # --------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.config(
+        default="sqlite:///db.sqlite3",  # fallback if DATABASE_URL not found
+        conn_max_age=600,                # persistent connections
+        ssl_require=True                 # enforce SSL (required by Supabase)
+    )
 }
 
 # --------------------------
@@ -122,9 +135,9 @@ AUTHENTICATION_BACKENDS = (
 
 # Redirects after login/logout
 LOGIN_REDIRECT_URL = '/accounts/post-login/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'   
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-# Google OAuth Credentials (REPLACE these two with your real credentials)
+# Google OAuth Credentials (replace with real ones)
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
@@ -133,12 +146,12 @@ SOCIALACCOUNT_PROVIDERS = {
             'key': ''
         },
         'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online',
-                         'prompt': 'select_account',
-                        },
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+            'prompt': 'select_account',
+        },
     }
 }
 
 # Optional — helps login on GET request
 SOCIALACCOUNT_LOGIN_ON_GET = True
-
