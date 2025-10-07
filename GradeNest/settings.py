@@ -4,9 +4,8 @@ Django settings for GradeNest project.
 
 from pathlib import Path
 import os
-import dj_database_url               # ✅ add this
-from dotenv import load_dotenv       # ✅ add this
-
+import dj_database_url
+from dotenv import load_dotenv
 
 # --------------------------
 # BASE DIRECTORY & ENVIRONMENT
@@ -19,9 +18,9 @@ load_dotenv()
 # --------------------------
 # SECURITY
 # --------------------------
-SECRET_KEY = 'django-insecure-(0&@=_43$i(a@0x(pa#$=@o)7q8yd5r^by@-75se995xsrs6j%'
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-(0&@=_43$i(a@0x(pa#$=@o)7q8yd5r^by@-75se995xsrs6j%")
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # --------------------------
 # INSTALLED APPS
@@ -44,7 +43,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    # Your app
+    # Your custom app
     'accounts',
 ]
 
@@ -70,7 +69,6 @@ ROOT_URLCONF = 'GradeNest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # ✅ Make sure Django can find your templates
         'DIRS': [BASE_DIR / 'accounts' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -91,9 +89,9 @@ WSGI_APPLICATION = 'GradeNest.wsgi.application'
 # --------------------------
 DATABASES = {
     "default": dj_database_url.config(
-        default="sqlite:///db.sqlite3",  # fallback if DATABASE_URL not found
-        conn_max_age=600,                # persistent connections
-        ssl_require=True                 # enforce SSL (required by Supabase)
+        default=os.getenv("DATABASE_URL", "sqlite:///db.sqlite3"),
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 
@@ -133,25 +131,22 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# Redirects after login/logout
+# ✅ Redirects after login/logout
 LOGIN_REDIRECT_URL = '/accounts/post-login/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-# Google OAuth Credentials (replace with real ones)
+# ✅ Google OAuth credentials
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '1014594358295-rvnslhldo7l999r6nju9m5jnl27m4hnf.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.getenv('GOOGLE_CLIENT_ID', '1014594358295-rvnslhldo7l999r6nju9m5jnl27m4hnf.apps.googleusercontent.com'),
+            'secret': os.getenv('GOOGLE_SECRET', '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'),
             'key': ''
         },
         'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-            'prompt': 'select_account',
-        },
+        'AUTH_PARAMS': {'access_type': 'online', 'prompt': 'select_account'},
     }
 }
 
-# Optional — helps login on GET request
+# ✅ Allow login on GET request (for smoother Google redirect)
 SOCIALACCOUNT_LOGIN_ON_GET = True
