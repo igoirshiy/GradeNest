@@ -5,31 +5,50 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Education Level - GradeNest</title>
+
+  <!-- ✅ Styles -->
   <link rel="stylesheet" href="{% static 'accounts/css/education-level.css' %}" />
+
+  <!-- ✅ Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+
+  <!-- ✅ JavaScript -->
   <script src="{% static 'accounts/js/education-level.js' %}" defer></script>
 </head>
+
 <body>
   <div class="container">
+    <!-- Left Section -->
     <div class="left-section">
       <div class="logo">
         <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img" />
         <span>GradeNest</span>
       </div>
+
       <img src="{% static 'accounts/img/education-level-img.png' %}" alt="Student Illustration" class="illustration-img" />
+
       <h1 class="tagline">Kick off by choosing your strand and year level.</h1>
       <p class="description">GradeNest transforms your grades into clear insights that guide your success.</p>
     </div>
 
+    <!-- Right Section -->
     <div class="right-section">
       <div class="form-container">
         <h2 class="form-title">Grade and Year Level Selection</h2>
 
+        <!-- ✅ JHS / SHS Buttons -->
+        <div class="level-buttons">
+          <button type="button" class="level-btn" data-level="jhs">Junior High School</button>
+          <button type="button" class="level-btn" data-level="shs">Senior High School</button>
+        </div>
+
         <form id="educationForm" method="POST" action="{% url 'accounts:education_level' %}">
           {% csrf_token %}
+
+          <!-- Grade Level -->
           <div class="input-group">
-            <label for="gradeLevel">Grade Level</label>
-            <select id="gradeLevel" name="gradeLevel" class="form-select">
+            <label for="gradeLevel" id="gradeLevelLabel">Grade Level</label>
+            <select id="gradeLevel" name="gradeLevel" class="form-select" required>
               <option value="">Choose your grade</option>
               <option value="Grade 7">Grade 7</option>
               <option value="Grade 8">Grade 8</option>
@@ -40,7 +59,21 @@
             </select>
           </div>
 
+          <!-- ✅ School Year (added with 5 options) -->
           <div class="input-group">
+            <label for="schoolYear">School Year</label>
+            <select id="schoolYear" name="schoolYear" class="form-select" required>
+              <option value="">Select School Year</option>
+              <option value="2024-2025">2024–2025</option>
+              <option value="2025-2026">2025–2026</option>
+              <option value="2026-2027">2026–2027</option>
+              <option value="2027-2028">2027–2028</option>
+              <option value="2028-2029">2028–2029</option>
+            </select>
+          </div>
+
+          <!-- Strand -->
+          <div class="input-group" id="strandGroup">
             <label for="strand">Strand (if SHS)</label>
             <select id="strand" name="strand" class="form-select">
               <option value="">Select strand</option>
