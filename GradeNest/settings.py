@@ -3,7 +3,7 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # ✅ loads variables from .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -52,14 +52,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'GradeNest.wsgi.application'
 
-# DATABASE (Supabase Session Pooler)
+# ✅ DATABASE (Supabase Session Pooler via .env)
+# For local testing (SQLite)
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'aws-1-ap-southeast-1.pooler.supabase.com',
+        'PORT': '5432',
+        'NAME': 'postgres',
+        'USER': 'postgres.pdtcnqitjifyqcoijmqi',
+        'PASSWORD': 'snc&4e@D$%26CVM',
+    }
 }
+
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -79,6 +84,14 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# Where Django looks for additional static files (like in app folders)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "accounts/static"),
+]
+
+# Optional: for production when you run collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

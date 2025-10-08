@@ -31,108 +31,66 @@
 
 <div class="container">
   <form id="registerForm" class="form" method="POST" action="{% url 'accounts:register' %}">
-<<<<<<< HEAD
     {% csrf_token %}
     <h2>Create Account</h2>
 
-    <!-- name -->
-    <label for="name">Full Name <span class="required">*</span></label>
+    <!-- First Name -->
+    <label for="firstname">First Name <span class="required">*</span></label>
     <div class="input-wrapper">
-      <img src="{% static 'accounts/img/user-icon.png' %}" alt="User Icon" class="input-icon">
-      <input type="text" id="name" placeholder="" name="name">
+      <input type="text" id="firstname" name="firstname" placeholder="Enter your first name">
     </div>
-    <small class="error" id="nameError"></small>
+    <small class="error" id="firstnameError"></small>
 
-    <!-- email -->
+    <!-- Last Name -->
+    <label for="lastname">Last Name <span class="required">*</span></label>
+    <div class="input-wrapper">
+      <input type="text" id="lastname" name="lastname" placeholder="Enter your last name">
+    </div>
+    <small class="error" id="lastnameError"></small>
+
+    <!-- Username -->
+    <label for="username">Username <span class="required">*</span></label>
+    <div class="input-wrapper">
+      <input type="text" id="username" name="username" placeholder="Choose a username">
+    </div>
+    <small class="error" id="usernameError"></small>
+
+    <!-- Email -->
     <label for="email">Email <span class="required">*</span></label>
     <div class="input-wrapper">
-      <img src="{% static 'accounts/img/email-icon.png' %}" alt="Email Icon" class="input-icon">
-      <input type="text" id="email" placeholder="" name="email">
+      <input type="text" id="email" name="email" placeholder="Enter your email">
     </div>
     <small class="error" id="emailError"></small>
 
-    <!-- password -->
+    <!-- Password -->
     <label for="password">Password <span class="required">*</span></label>
     <div class="input-wrapper">
-      <img src="{% static 'accounts/img/lock-icon.png' %}" alt="Lock Icon" class="input-icon">
-      <input type="password" id="password" placeholder="" name="password">
+      <input type="password" id="password" name="password" placeholder="Enter your password">
       <button type="button" id="togglePassword" class="toggle-btn">👁</button>
     </div>
     <small class="error" id="passwordError"></small>
 
-    <!-- confirm Password -->
+    <!-- Confirm Password -->
     <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
     <div class="input-wrapper">
-      <img src="{% static 'accounts/img/lock2-icon.png' %}" alt="Lock Icon" class="input-icon">
-      <input type="password" id="confirmPassword" placeholder="" name="confirmPassword">
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password">
     </div>
     <small class="error" id="confirmPasswordError"></small>
 
-    <!-- terms n conditions -->
+    <!-- Terms and Conditions -->
     <div class="terms">
-      <label for="terms">
-        <input type="checkbox" id="terms" name="terms">
-        I agree to the <a href="#">terms and conditions</a>
-      </label>
+      <input type="checkbox" id="terms" name="terms">
+      <label for="terms">I agree to the <a href="#">terms and conditions</a></label>
     </div>
-
     <small class="error" id="termsError"></small>
-=======
-  {% csrf_token %}
-  <h2>Create Account</h2>
 
-  <!-- First Name -->
-<label for="firstname">First Name <span class="required">*</span></label>
-<div class="input-wrapper">
-  <input type="text" id="firstname" name="firstname" placeholder="Enter your first name">
-</div>
-<small class="error" id="firstnameError"></small>
+    <!-- Submit Button -->
+    <button type="submit">Register</button>
 
-<!-- Last Name -->
-<label for="lastname">Last Name <span class="required">*</span></label>
-<div class="input-wrapper">
-  <input type="text" id="lastname" name="lastname" placeholder="Enter your last name">
-</div>
-<small class="error" id="lastnameError"></small>
+    <!-- Login Link -->
+    <p><a href="/login">Already have an account? Log in</a></p>
 
-  <!-- Email -->
-  <label for="email">Email <span class="required">*</span></label>
-  <div class="input-wrapper">
-    <input type="text" id="email" name="email" placeholder="Enter your email">
-  </div>
-  <small class="error" id="emailError"></small>
-
-  <!-- Password -->
-  <label for="password">Password <span class="required">*</span></label>
-  <div class="input-wrapper">
-    <input type="password" id="password" name="password" placeholder="Enter your password">
-    <button type="button" id="togglePassword" class="toggle-btn">👁</button>
-  </div>
-  <small class="error" id="passwordError"></small>
-
-  <!-- Confirm Password -->
-  <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-  <div class="input-wrapper">
-    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password">
-  </div>
-  <small class="error" id="confirmPasswordError"></small>
->>>>>>> register-update
-
-  <!-- Terms and Conditions -->
-  <div class="terms">
-    <input type="checkbox" id="terms" name="terms">
-    <label for="terms">I agree to the <a href="#">terms and conditions</a></label>
-  </div>
-  <small class="error" id="termsError"></small>
-
-  <!-- Submit Button -->
-  <button type="submit">Register</button>
-
-  <!-- Login Link -->
-  <p><a href="/login">Already have an account? Log in</a></p>
-
-</form>
-
+  </form>
 </div>
 </body>
 </html>

@@ -68,12 +68,13 @@ body {
 }
 
 .container {
-  margin-top: 120px; 
+  min-height: 100vh; /* fill full screen */
   display: flex;
   justify-content: center;
   align-items: center;
-  align-items: center;
   width: 100%;
+  padding-top: 100px; /* space for fixed header */
+  box-sizing: border-box;
 }
 
 .container a {
@@ -97,7 +98,8 @@ body {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  width: 350px;
+  width: 90%; /* responsive width */
+  max-width: 400px; /* prevent being too wide */
   color: #fff;
 }
 

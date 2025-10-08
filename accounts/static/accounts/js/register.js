@@ -112,22 +112,9 @@ document.addEventListener("DOMContentLoaded", () => {
     form.submit();  // sends the form data to Django
 }
 
-<<<<<<< HEAD
-    // hash password (simple simulation for now)
-    //const hashedPassword = btoa(password.value);
 
-    //alert("Registration successful! Redirecting to Education Level Page...");
-   /* console.log({
-      name: name.value,
-      email: email.value,
-      password: hashedPassword
-    });*/
-
-    // redirect simulation
-   // window.location.href = "/education-level";
-=======
     // ✅ Submit form to Django backend
     form.submit();
->>>>>>> register-update
+
   });
 });
