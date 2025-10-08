@@ -22,7 +22,7 @@ def register(request):
 
         # Duplicate check
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists!")
+            messages.error(request, "Account already exists!")
             return render(request, "accounts/register.html", {"email": email})
 
         if User.objects.filter(email=email).exists():
@@ -43,7 +43,7 @@ def register(request):
 
 
 # ---------------- Login ----------------
-def user_login(request):    
+def user_login(request):
     if request.method == "POST":
         email = request.POST.get("username").strip()
         password = request.POST.get("password")
@@ -62,10 +62,9 @@ def user_login(request):
             profile, _ = Profile.objects.get_or_create(user=user_auth)
 
             # ✅ Check if education level is already set
-            if not profile.education_level:
+            if not profile.grade_level:
                 return redirect("accounts:education_level")
 
-    
             return redirect("accounts:dashboard")
         else:
             messages.error(request, "❌ Incorrect password. Please try again.")
@@ -80,27 +79,37 @@ def education_level(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
     # If already set, skip
-    if profile.education_level:
+    if profile.grade_level:
         return redirect("accounts:dashboard")
 
     if request.method == "POST":
-        grade = request.POST.get("gradeLevel")
+        grade_level = request.POST.get("gradeLevel")
         strand = request.POST.get("strand")
+        school_year = request.POST.get("schoolYear")
 
-        # ✅ Fix: Allow strand to be optional (for JHS)
-        if not grade:
+        # ✅ Validation
+        if not grade_level:
             messages.error(request, "Please select your grade level.")
             return render(request, "accounts/education-level.html")
 
-        if "Grade 11" in grade or "Grade 12" in grade:
+        if not school_year:
+            messages.error(request, "Please select your school year.")
+            return render(request, "accounts/education-level.html")
+
+        # ✅ Senior High School strand required only for Grade 11–12
+        if grade_level in ["Grade 11", "Grade 12"]:
             if not strand:
                 messages.error(request, "Please select your strand for SHS.")
                 return render(request, "accounts/education-level.html")
-            profile.education_level = f"{grade} - {strand}"
+            profile.strand = strand
         else:
-            profile.education_level = grade  # no strand for JHS
+            profile.strand = None  # no strand for JHS
 
+        # ✅ Save to database
+        profile.grade_level = grade_level
+        profile.school_year = school_year
         profile.save()
+
         return redirect("accounts:dashboard")
 
     return render(request, "accounts/education-level.html")
@@ -135,8 +144,8 @@ def post_login(request):
 
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
-    # ✅ If first-time Google login (no education level)
-    if not profile.education_level:
+    # ✅ If first-time Google login (no grade level)
+    if not profile.grade_level:
         return redirect("accounts:education_level")
 
     return redirect("accounts:dashboard")
