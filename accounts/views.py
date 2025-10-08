@@ -35,6 +35,7 @@ def register_view(request):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirmPassword")
 
+
         # Check passwords match
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
@@ -62,3 +63,4 @@ def register_view(request):
         return redirect("accounts:login")
 
     return render(request, 'accounts/register.html')
+

@@ -6,16 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GradeNest</title>
     <link rel="stylesheet" href="{% static 'accounts/css/login.css' %}">
-    
-    <!-- google font (Outfit) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    
     <script src="{% static 'accounts/js/login.js' %}" defer></script>
 </head>
 <body>
-    <!-- header -->
 <header class="site-header">
     <div class="logo">
         <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img">
@@ -30,8 +26,6 @@
     </nav>
 </header>
 
-
-    <!-- login form -->
     <div class="container">
         <form id="loginForm" class="form" method="POST" action="{% url 'accounts:login' %}">
     {% csrf_token %}

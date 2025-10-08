@@ -7,7 +7,6 @@
   <title>Education Level - GradeNest</title>
   <link rel="stylesheet" href="{% static 'accounts/css/education-level.css' %}">
 
-  <!-- google font (outfit) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -21,6 +20,7 @@
         <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img">
         <span>GradeNest</span>
       </div>
+      <img src="{% static 'accounts/img/education-level-img.png' %}" alt="Student Illustration" class="illustration-img">
       <h1 class="tagline">Kick off by choosing your strand and year level.</h1>
       <p class="description">
         GradeNest transforms your grades into clear insights that guide your success.
@@ -34,12 +34,11 @@
         <div class="level-buttons">
           <button type="button" class="level-btn" data-level="jhs">Junior High School</button>
           <button type="button" class="level-btn" data-level="shs">Senior High School</button>
-          <button type="button" class="level-btn" data-level="college">College Level</button>
         </div>
 
         <form id="educationForm">
           <div class="input-group">
-            <label for="gradeLevel">Grade Level <span class="required">*</span></label>
+            <label for="gradeLevel"><span id="gradeLevelLabel">Grade Level</span> <span class="required">*</span></label>
             <select id="gradeLevel" class="form-select" disabled>
               <option value="">Choose between 7 - 10</option>
             </select>
@@ -54,13 +53,20 @@
             <small class="error" id="schoolYearError"></small>
           </div>
 
+          <div class="input-group" id="strandGroup" style="display: none;">
+            <label for="strand">Strand <span class="required">*</span></label>
+            <select id="strand" class="form-select" disabled>
+              <option value="">Select your strand</option>
+            </select>
+            <small class="error" id="strandError"></small>
+          </div>
+
           <button type="submit" class="get-started-btn" disabled>Get Started</button>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- jhs modal -->
   <div id="jhsModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -97,7 +103,6 @@
     </div>
   </div>
 
-  <!-- shs modal -->
   <div id="shsModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -143,32 +148,6 @@
     </div>
   </div>
 
-  <!-- college modal -->
-  <div id="collegeModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>College Details</h3>
-        <button type="button" class="close-btn" data-modal="college">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <label for="collegeTermType">Term Type <span class="required">*</span></label>
-          <select id="collegeTermType" class="form-select">
-            <option value="">Select term type</option>
-            <option value="Semester">Semester</option>
-            <option value="Trimester">Trimester</option>
-          </select>
-          <small class="error" id="collegeTermTypeError"></small>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-cancel" data-modal="college">Cancel</button>
-        <button type="button" class="btn-next" data-modal="college">Next</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- modal overlay -->
   <div id="modalOverlay" class="modal-overlay"></div>
 </body>
 </html>

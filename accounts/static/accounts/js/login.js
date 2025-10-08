@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordError = document.getElementById("passwordError");
 
   form.addEventListener("submit", function (e) {
+
     e.preventDefault(); // prevent default submission until validated
     let valid = true;
 
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       usernameError.innerText = "Username is required";
       usernameError.style.display = "block";
       username.classList.add("input-error");
+
       valid = false;
     }
 
@@ -29,8 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
       valid = false;
     }
 
+
     if (valid) {
       form.submit(); // sends POST to Django login_view
+
     }
   });
 });

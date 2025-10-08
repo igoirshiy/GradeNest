@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       confirmPassword.classList.add("input-error");
       valid = false;
     } else if (password.value !== confirmPassword.value) {
-      confirmPasswordError.innerText = "Passwords don’t match";
+      confirmPasswordError.innerText = "Passwords don't match";
       confirmPasswordError.style.display = "block";
       confirmPassword.classList.add("input-error");
       valid = false;
@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ✅ Submit form to Django backend
     form.submit();
+
 
   });
 });
