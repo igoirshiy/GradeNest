@@ -1,84 +1,73 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
-from allauth.socialaccount.models import SocialAccount
-from .models import Profile
 from django.contrib.auth.decorators import login_required
+from allauth.socialaccount.models import SocialAccount
+from .models import CustomUser, Profile
 
 
-# ---------------- Register ----------------
+# ---------------- REGISTER ----------------
 def register(request):
     if request.method == "POST":
-        username = request.POST.get("username")
+        full_name = request.POST.get("full_name")
         email = request.POST.get("email")
         password = request.POST.get("password1")
         confirm_password = request.POST.get("password2")
 
-        # Password validation
         if password != confirm_password:
             messages.error(request, "Passwords do not match!")
-            return render(request, "accounts/register.html", {"username": username, "email": email})
-
-        # Duplicate check
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Account already exists!")
             return render(request, "accounts/register.html", {"email": email})
 
-        if User.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already registered!")
-            return render(request, "accounts/register.html", {"username": username})
+            return render(request, "accounts/register.html", {"full_name": full_name})
 
-        # ✅ Create user and log them in immediately
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
+        user = CustomUser.objects.create_user(
+            email=email, full_name=full_name, password=password
+        )
         Profile.objects.create(user=user)
 
-        # ✅ Specify backend since allauth is installed
-        auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-
+        auth_login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect("accounts:education_level")
 
     return render(request, "accounts/register.html")
 
 
-# ---------------- Login ----------------
+# ---------------- LOGIN ----------------
 def user_login(request):
     if request.method == "POST":
-        email = request.POST.get("username").strip()
+        email = request.POST.get("email").strip()
         password = request.POST.get("password")
 
         try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            messages.error(request, "❌ Email not found. Please register first.")
-            return render(request, "accounts/login.html", {"login_input": email})
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            messages.error(request, "Email not found. Please register first.")
+            return render(request, "accounts/login.html", {"email": email})
 
-        # Authenticate using username (since Django requires it)
-        user_auth = authenticate(request, username=user.username, password=password)
+        user_auth = authenticate(request, email=email, password=password)
 
         if user_auth is not None:
             auth_login(request, user_auth)
             profile, _ = Profile.objects.get_or_create(user=user_auth)
 
-            # ✅ Check if education level is already set
             if not profile.grade_level:
                 return redirect("accounts:education_level")
 
             return redirect("accounts:dashboard")
+
         else:
-            messages.error(request, "❌ Incorrect password. Please try again.")
-            return render(request, "accounts/login.html", {"login_input": email})
+            messages.error(request, "Incorrect password. Please try again.")
+            return render(request, "accounts/login.html", {"email": email})
 
     return render(request, "accounts/login.html")
 
 
-# ---------------- Education Level ----------------
+# ---------------- EDUCATION LEVEL ----------------
 @login_required
 def education_level(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
-    # If already set, skip
     if profile.grade_level:
         return redirect("accounts:dashboard")
 
@@ -87,26 +76,16 @@ def education_level(request):
         strand = request.POST.get("strand")
         school_year = request.POST.get("schoolYear")
 
-        # ✅ Validation
-        if not grade_level:
-            messages.error(request, "Please select your grade level.")
+        if not grade_level or not school_year:
+            messages.error(request, "Please complete all required fields.")
             return render(request, "accounts/education-level.html")
 
-        if not school_year:
-            messages.error(request, "Please select your school year.")
+        if grade_level in ["Grade 11", "Grade 12"] and not strand:
+            messages.error(request, "Please select your strand.")
             return render(request, "accounts/education-level.html")
 
-        # ✅ Senior High School strand required only for Grade 11–12
-        if grade_level in ["Grade 11", "Grade 12"]:
-            if not strand:
-                messages.error(request, "Please select your strand for SHS.")
-                return render(request, "accounts/education-level.html")
-            profile.strand = strand
-        else:
-            profile.strand = None  # no strand for JHS
-
-        # ✅ Save to database
         profile.grade_level = grade_level
+        profile.strand = strand if strand else None
         profile.school_year = school_year
         profile.save()
 
@@ -115,36 +94,33 @@ def education_level(request):
     return render(request, "accounts/education-level.html")
 
 
-# ---------------- Logout ----------------
+# ---------------- DASHBOARD ----------------
+@login_required
+def dashboard(request):
+    return render(request, "accounts/dashboard.html")
+
+
+# ---------------- LOGOUT ----------------
 def user_logout(request):
     auth_logout(request)
     messages.info(request, "You have been logged out.")
     return redirect("accounts:login")
 
 
-# ---------------- Dashboard ----------------
-@login_required
-def dashboard(request):
-    return render(request, "accounts/dashboard.html")
-
-
-# ---------------- Post Google Login Redirect ----------------
+# ---------------- POST LOGIN (Google) ----------------
 def post_login(request):
-    """
-    Handles redirect logic after Google login.
-    - If first-time Google login → go to education-level
-    - If returning user → go to dashboard
-    """
     if not request.user.is_authenticated:
         return redirect("accounts:login")
 
-    # Clear Google's success message
-    storage = messages.get_messages(request)
-    storage.used = True
-
+    # For Google login users
+    social_user = SocialAccount.objects.filter(user=request.user).first()
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
-    # ✅ If first-time Google login (no grade level)
+    if social_user:
+        data = social_user.extra_data
+        request.user.full_name = data.get("name", request.user.full_name)
+        request.user.save()
+
     if not profile.grade_level:
         return redirect("accounts:education_level")
 
