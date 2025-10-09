@@ -131,9 +131,22 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*", "full_name*"]
+
+
 # ✅ Redirects after login/logout
 LOGIN_REDIRECT_URL = '/accounts/post-login/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
 
 # ✅ Google OAuth credentials
 SOCIALACCOUNT_PROVIDERS = {
@@ -141,12 +154,10 @@ SOCIALACCOUNT_PROVIDERS = {
         'APP': {
             'client_id': os.getenv('GOOGLE_CLIENT_ID', '1014594358295-rvnslhldo7l999r6nju9m5jnl27m4hnf.apps.googleusercontent.com'),
             'secret': os.getenv('GOOGLE_SECRET', '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'),
-            'key': ''
+            'key': '',
         },
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online', 'prompt': 'select_account'},
     }
 }
 
-# ✅ Allow login on GET request (for smoother Google redirect)
-SOCIALACCOUNT_LOGIN_ON_GET = True
