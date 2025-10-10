@@ -21,6 +21,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # ✅ Make your app URLs available at the root (optional, cleaner)
     path("accounts/", include("accounts.urls")),  
-    # ✅ Keep allauth URLs for Google Sign-In
-    path("accounts/", include("allauth.urls")),
 ]

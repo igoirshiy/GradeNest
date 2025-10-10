@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from allauth.socialaccount.models import SocialAccount
 from .models import CustomUser, Profile
 
 
@@ -36,14 +35,18 @@ def register(request):
 # ---------------- LOGIN ----------------
 def user_login(request):
     if request.method == "POST":
-        email = request.POST.get("email").strip()
-        password = request.POST.get("password")
+        email = request.POST.get("username", "").strip()  # matches the HTML input name
+        password = request.POST.get("password", "").strip()
+
+        if not email or not password:
+            messages.error(request, "Please enter both email and password.")
+            return render(request, "accounts/login.html", {"login_input": email})
 
         try:
             user = CustomUser.objects.get(email=email)
         except CustomUser.DoesNotExist:
             messages.error(request, "Email not found. Please register first.")
-            return render(request, "accounts/login.html", {"email": email})
+            return render(request, "accounts/login.html", {"login_input": email})
 
         user_auth = authenticate(request, email=email, password=password)
 
@@ -55,10 +58,9 @@ def user_login(request):
                 return redirect("accounts:education_level")
 
             return redirect("accounts:dashboard")
-
         else:
             messages.error(request, "Incorrect password. Please try again.")
-            return render(request, "accounts/login.html", {"email": email})
+            return render(request, "accounts/login.html", {"login_input": email})
 
     return render(request, "accounts/login.html")
 
@@ -105,23 +107,3 @@ def user_logout(request):
     auth_logout(request)
     messages.info(request, "You have been logged out.")
     return redirect("accounts:login")
-
-
-# ---------------- POST LOGIN (Google) ----------------
-def post_login(request):
-    if not request.user.is_authenticated:
-        return redirect("accounts:login")
-
-    # For Google login users
-    social_user = SocialAccount.objects.filter(user=request.user).first()
-    profile, _ = Profile.objects.get_or_create(user=request.user)
-
-    if social_user:
-        data = social_user.extra_data
-        request.user.full_name = data.get("name", request.user.full_name)
-        request.user.save()
-
-    if not profile.grade_level:
-        return redirect("accounts:education_level")
-
-    return redirect("accounts:dashboard")

@@ -14,6 +14,4 @@ urlpatterns = [
     path("education-level/", views.education_level, name="education_level"),
     path("dashboard/", views.dashboard, name="dashboard"),
 
-    # Google sign-in redirect handler
-    path("post-login/", views.post_login, name="post_login"),
 ]
