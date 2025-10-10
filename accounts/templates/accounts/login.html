@@ -1,5 +1,4 @@
 {% load static %}
-{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,8 +44,7 @@
       transition: opacity 1s ease-out;
     }
 
-    #loginBtn,
-    .google-btn {
+    #loginBtn {
       width: 260px;
       max-width: 90%;
       box-sizing: border-box;
@@ -56,9 +54,6 @@
       font-weight: 500;
       font-size: 16px;
       text-align: center;
-    }
-
-    #loginBtn {
       background: #28d47c;
       color: #fff;
       border: none;
@@ -71,64 +66,12 @@
       background: #24be72;
     }
 
-    .google-signin {
-      display: flex;
-      justify-content: center;
-      margin: 18px 0 0;
-    }
-
-    .google-btn {
-      position: relative;
-      display: block;
-      width: 260px;
-      max-width: 90%;
-      height: 52px;
-      margin: 18px auto 0;
-      background: #ffffff;
-      border: 1px solid #dadce0;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-      text-decoration: none !important;
-      color: #5f6368;
-      font-weight: 500;
-      font-size: 15px;
-      line-height: 52px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: background-color .15s ease, box-shadow .15s ease, transform .08s;
-    }
-
-    .google-btn img {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 22px;
-      height: 22px;
-      display: block;
-    }
-
-    .google-btn span {
-      display: block;
-      text-align: center;
-      pointer-events: none;
-    }
-
-    .google-btn:hover,
-    .google-btn:focus {
-      background-color: #f7f7f7;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.14);
-      transform: translateY(-1px);
-      outline: none;
-    }
-
     @media (max-width: 420px) {
-      .google-btn {
+      #loginBtn {
         width: 92%;
         height: 48px;
         line-height: 48px;
       }
-      .google-btn img { left: 12px; }
     }
   </style>
 </head>
@@ -153,13 +96,10 @@
     {% csrf_token %}
     <h2>Student Login</h2>
 
-    {# ✅ Only show messages that are NOT from Google login #}
     {% if messages %}
       <div class="messages" id="alert-box">
         {% for message in messages %}
-          {% if "Successfully signed in" not in message.message %}
-            <div class="alert {{ message.tags }}">{{ message }}</div>
-          {% endif %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
         {% endfor %}
       </div>
     {% endif %}
@@ -193,16 +133,9 @@
 
     <button type="submit" id="loginBtn">Log in</button>
 
-    <div class="divider">or</div>
-
-    <div class="google-signin">
-      <a href="{% provider_login_url 'google' %}" class="google-btn">
-        <img src="{% static 'accounts/img/google.png' %}" alt="Google Icon" />
-        <span>Sign in with Google</span>
-      </a>
-    </div>
-
-    <a href="{% url 'accounts:register' %}" style="display:block;text-align:center;margin-top:18px;color:#28d47c;text-decoration:none;font-weight:500;">Create an Account</a>
+    <a href="{% url 'accounts:register' %}" style="display:block;text-align:center;margin-top:18px;color:#28d47c;text-decoration:none;font-weight:500;">
+      Create an Account
+    </a>
   </form>
 </div>
 
