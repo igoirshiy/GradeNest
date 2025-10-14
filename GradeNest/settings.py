@@ -95,3 +95,8 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',  # custom email backend
+    'django.contrib.auth.backends.ModelBackend',  # fallback
+]

@@ -228,7 +228,6 @@ body {
   border-color: #EF4444 !important;
 }
 
-/* Modal Styles */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -394,7 +393,7 @@ body {
 
   .form-container {
     padding: 35px 28px;
-    min-height: auto; /* allow it to shrink naturally on small screens */
+    min-height: auto;
   }
 
   .level-buttons {

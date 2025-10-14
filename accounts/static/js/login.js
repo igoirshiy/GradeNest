@@ -16,13 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     [username, password].forEach(input => input.classList.remove("input-error"));
 
     // check not empty
-    if (username.value.trim() === "") {
-      usernameError.innerText = "Username is required";
-      usernameError.style.display = "block";
-      username.classList.add("input-error");
-
-      valid = false;
-    }
+    if (email.value.trim() === "") {
+    emailError.innerText = "Email is required";
+    emailError.style.display = "block";
+    email.classList.add("input-error");
+    valid = false;
+}
 
     if (password.value.trim() === "") {
       passwordError.innerText = "Password is required";
