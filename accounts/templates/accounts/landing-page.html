@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeNest - Your Academic Compass</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/landing-page.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <script src="{% static 'accounts/js/landing-page.js' %}" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo">
+            <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img">
+            <span>GradeNest</span>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                <li><a href="{% url 'accounts:register' %}" class="btn-signup">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1><span class="brand-highlight">GradeNest</span>, Your Academic Compass</h1>
+                        <p>With GradeNest, you're no longer lost in the dark about your grades. Giving you real-time insights, transparent tracking, and so much more.</p>
+                    </div>
+                    <div class="hero-image">
+                        <img src="{% static 'accounts/img/landing-img.png' %}" alt="Education Level" class="hero-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2>Packed with <span class="highlight">Features</span></h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <img src="{% static 'accounts/img/calculation-img.png' %}" alt="Automatic Grade Calculation" class="feature-img">
+                        <h3>Automatic Grade Calculation</h3>
+                    </div>
+                    <div class="feature-card">
+                        <img src="{% static 'accounts/img/progress-img.png' %}" alt="Track Your Progress" class="feature-img">
+                        <h3>Track Your Progress</h3>
+                    </div>
+                    <div class="feature-card">
+                        <img src="{% static 'accounts/img/goal-img.png' %}" alt="Set Academic Goals" class="feature-img">
+                        <h3>Set Academic Goals</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="team-section">
+            <div class="container">
+                <h2>Project Managers</h2>
+                <div class="team-grid">
+                    <div class="team-member"><div class="avatar"></div></div>
+                    <div class="team-member"><div class="avatar"></div></div>
+                    <div class="team-member"><div class="avatar"></div></div>
+                    <div class="team-member"><div class="avatar"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="developers" class="team-section">
+            <div class="container">
+                <h2>Project Developers</h2>
+                <div class="team-grid">
+                    <div class="team-member"><div class="avatar"></div></div>
+                    <div class="team-member"><div class="avatar"></div></div>
+                    <div class="team-member"><div class="avatar"></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <img src="{% static 'accounts/img/gradenest-logo.png' %}" alt="GradeNest Logo" class="logo-img">
+                    <span>GradeNest</span>
+                </div>
+                <nav class="footer-nav">
+                    <ul class="nav-links">
+                        <li><a href="#home" class="active">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                        <li><a href="{% url 'accounts:register' %}">Sign Up</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
