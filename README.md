@@ -32,18 +32,26 @@ Designed with accuracy and accessibility in mind, GradeNest streamlines grade mo
    ```bash
    git clone https://github.com/Jamesgab29/CSIT327-G7-GradeNest.git
    cd CSIT327-G7-GradeNest
+
 2. **Create and activate a virtual environment**
    python -m venv venv
    venv\Scripts\activate       # On Windows
+
 3. **Install dependencies**
-   pip install -r requirements.txt
+   pip install django
+   pip install dj-database-url
+   pip install python-dotenv
+   pip install psycopg2-binary
+
 4. **Set up environment variables**
    Create a .env file in the root directory and add:
    SECRET_KEY=your_django_secret_key
    DATABASE_URL=your_supabase_postgres_url
    DEBUG=True
+   
 5. **Apply migrations**
    python manage.py migrate
+
 6. **Run the development server**
    python manage.py runserver
 

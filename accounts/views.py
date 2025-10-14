@@ -101,9 +101,12 @@ def education_level(request):
 def dashboard(request):
     return render(request, "accounts/dashboard.html")
 
+# ---------------- DASHBOARD ----------------
+def landing_page(request):
+    return render(request, "accounts/landing-page.html")
 
 # ---------------- LOGOUT ----------------
 def user_logout(request):
     auth_logout(request)
     messages.info(request, "You have been logged out.")
-    return redirect("accounts:login")
+    return redirect("accounts:landing-page")

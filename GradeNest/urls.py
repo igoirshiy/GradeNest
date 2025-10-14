@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
+
+def home_redirect(request):
+    return redirect('accounts:landing-page')
 
 urlpatterns = [
+    path('', home_redirect, name='home'),
     path("admin/", admin.site.urls),
-    # ✅ Make your app URLs available at the root (optional, cleaner)
     path("accounts/", include("accounts.urls")),  
 ]
