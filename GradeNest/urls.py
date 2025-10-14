@@ -18,11 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
 
-def home_redirect(request):
-    return redirect('accounts:landing-page')
-
 urlpatterns = [
-    path('', home_redirect, name='home'),
+    # Root URL goes to accounts app (landing page will appear here)
+    path("", include("accounts.urls")),
     path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls")),  
 ]

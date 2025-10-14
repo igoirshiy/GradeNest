@@ -2,30 +2,46 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from .models import CustomUser, Profile
+import re
 
 
 # ---------------- REGISTER ----------------
 def register(request):
     if request.method == "POST":
-        full_name = request.POST.get("full_name")
-        email = request.POST.get("email")
-        password = request.POST.get("password1")
-        confirm_password = request.POST.get("password2")
+        full_name = request.POST.get("full_name", "").strip()
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password1", "")
+        confirm_password = request.POST.get("password2", "")
+
+        context = {"full_name": full_name, "email": email}
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            context["email_error"] = "Please enter a valid email address."
+            return render(request, "accounts/register.html", context)
 
         if password != confirm_password:
-            messages.error(request, "Passwords do not match!")
-            return render(request, "accounts/register.html", {"email": email})
+            context["password_error"] = "Please make sure your passwords match."
+            return render(request, "accounts/register.html", context)
+
+        if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_]).{8,}$', password):
+            context["password_format_error"] = (
+                "Password should have a minimum length of 8 and contain upper and lowercase letters and a special character."
+            )
+            return render(request, "accounts/register.html", context)
 
         if CustomUser.objects.filter(email=email).exists():
-            messages.error(request, "Email already registered!")
-            return render(request, "accounts/register.html", {"full_name": full_name})
+            messages.error(request, "Email already registered. Please click here to login.")
+            return render(request, "accounts/register.html", context)
 
         user = CustomUser.objects.create_user(
             email=email, full_name=full_name, password=password
         )
         Profile.objects.create(user=user)
-
         auth_login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect("accounts:education_level")
 
@@ -35,7 +51,7 @@ def register(request):
 # ---------------- LOGIN ----------------
 def user_login(request):
     if request.method == "POST":
-        email = request.POST.get("username", "").strip()  # matches the HTML input name
+        email = request.POST.get("username", "").strip()
         password = request.POST.get("password", "").strip()
 
         if not email or not password:
@@ -101,12 +117,13 @@ def education_level(request):
 def dashboard(request):
     return render(request, "accounts/dashboard.html")
 
-# ---------------- DASHBOARD ----------------
+
+# ---------------- LANDING PAGE ----------------
 def landing_page(request):
     return render(request, "accounts/landing-page.html")
+
 
 # ---------------- LOGOUT ----------------
 def user_logout(request):
     auth_logout(request)
-    messages.info(request, "You have been logged out.")
     return redirect("accounts:landing-page")
