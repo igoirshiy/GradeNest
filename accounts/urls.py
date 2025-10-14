@@ -5,14 +5,15 @@ from . import views
 app_name = "accounts"
 
 urlpatterns = [
+    # Landing page as the default root URL
+    path("", views.landing_page, name="landing-page"),
+
     # Auth pages
     path("register/", views.register, name="register"),
     path("login/", views.user_login, name="login"),
     path("logout/", views.user_logout, name="logout"),
 
     # Core flow pages
-    path("landing-page/", views.landing_page, name="landing-page"),
     path("education-level/", views.education_level, name="education_level"),
     path("dashboard/", views.dashboard, name="dashboard"),
-
 ]
