@@ -46,45 +46,47 @@ def login_view(request):
 
 def register_view(request):
     if request.method == "POST":
-        firstname = request.POST.get("firstname")
-        lastname = request.POST.get("lastname")
-        username = request.POST.get("username")
+        fullname = request.POST.get("fullname")
         email = request.POST.get("email")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirmPassword")
 
-        # Password validation
+        # Split full name into first + last
+        if fullname:
+            parts = fullname.strip().split(" ", 1)
+            firstname = parts[0]
+            lastname = parts[1] if len(parts) > 1 else ""
+        else:
+            firstname = ""
+            lastname = ""
+
+        # Auto-generate username from email (before the @ symbol)
+        username = email.split("@")[0]
+
+        # Password match check
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return redirect("accounts:register")
 
-        # Username / email uniqueness validation
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already taken.")
-            return redirect("accounts:register")
+        # Check email uniqueness
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already registered.")
             return redirect("accounts:register")
 
-        # Create user
+        # Create the user
         user = User.objects.create_user(
-            username=username,
+            username=username,   # auto-generated
             email=email,
             password=password,
             firstname=firstname,
             lastname=lastname
         )
-        user.save()
-
-        # Automatically create profile
         Profile.objects.create(user=user)
 
-        # 🔹 Correct authentication using email
+        # Log the user in immediately after registration
         user = authenticate(request, email=email, password=password)
-        if user is not None:
+        if user:
             login(request, user)
+            return redirect("accounts:education-level")
 
-        # Redirect to education-level page
-        return redirect("accounts:education-level")
-
-    return render(request, 'accounts/register.html')
+    return render(request, "accounts/register.html")

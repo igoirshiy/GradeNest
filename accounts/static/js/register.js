@@ -1,15 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registerForm");
 
-  const firstname = document.getElementById("firstname");
-  const lastname = document.getElementById("lastname");
+  const fullname = document.getElementById("fullname");
   const email = document.getElementById("email");
   const password = document.getElementById("password");
   const confirmPassword = document.getElementById("confirmPassword");
   const terms = document.getElementById("terms");
 
-  const firstnameError = document.getElementById("firstnameError");
-  const lastnameError = document.getElementById("lastnameError");
+  const fullnameError = document.getElementById("fullnameError");
   const emailError = document.getElementById("emailError");
   const passwordError = document.getElementById("passwordError");
   const confirmPasswordError = document.getElementById("confirmPasswordError");
@@ -26,37 +24,22 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     let valid = true;
 
-    // Reset error states
-    [firstnameError, lastnameError, emailError, passwordError, confirmPasswordError, termsError].forEach(err => {
+    [fullnameError, emailError, passwordError, confirmPasswordError, termsError].forEach(err => {
       err.style.display = "none";
     });
-    [firstname, lastname, email, password, confirmPassword].forEach(input => input.classList.remove("input-error"));
+    [fullname, email, password, confirmPassword].forEach(input => input.classList.remove("input-error"));
 
+    // Full Name validation
     const namePattern = /^[A-Za-z\s]+$/;
-
-    // First Name validation
-    if (firstname.value.trim() === "") {
-      firstnameError.innerText = "First name is required";
-      firstnameError.style.display = "block";
-      firstname.classList.add("input-error");
+    if (fullname.value.trim() === "") {
+      fullnameError.innerText = "Full name is required";
+      fullnameError.style.display = "block";
+      fullname.classList.add("input-error");
       valid = false;
-    } else if (!namePattern.test(firstname.value.trim())) {
-      firstnameError.innerText = "Please enter a valid first name";
-      firstnameError.style.display = "block";
-      firstname.classList.add("input-error");
-      valid = false;
-    }
-
-    // Last Name validation
-    if (lastname.value.trim() === "") {
-      lastnameError.innerText = "Last name is required";
-      lastnameError.style.display = "block";
-      lastname.classList.add("input-error");
-      valid = false;
-    } else if (!namePattern.test(lastname.value.trim())) {
-      lastnameError.innerText = "Please enter a valid last name";
-      lastnameError.style.display = "block";
-      lastname.classList.add("input-error");
+    } else if (!namePattern.test(fullname.value.trim())) {
+      fullnameError.innerText = "Please enter a valid name";
+      fullnameError.style.display = "block";
+      fullname.classList.add("input-error");
       valid = false;
     }
 
@@ -68,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       email.classList.add("input-error");
       valid = false;
     } else if (!email.value.match(emailPattern)) {
-      emailError.innerText = "Please enter a valid email address";
+      emailError.innerText = "Please enter a valid email";
       emailError.style.display = "block";
       email.classList.add("input-error");
       valid = false;
@@ -88,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       valid = false;
     }
 
-    // Confirm Password
+    // Confirm Password validation
     if (confirmPassword.value.trim() === "") {
       confirmPasswordError.innerText = "Confirm Password is required";
       confirmPasswordError.style.display = "block";
@@ -101,21 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
       valid = false;
     }
 
-    // Terms checkbox
+    // Terms
     if (!terms.checked) {
-      termsError.innerText = "You must accept the terms and conditions to register an account.";
+      termsError.innerText = "You must agree to the terms and conditions";
       termsError.style.display = "block";
       valid = false;
     }
 
     if (valid) {
-    form.submit();  // sends the form data to Django
-}
-
-
-    // ✅ Submit form to Django backend
-    form.submit();
-
-
+      form.submit();
+    }
   });
 });
